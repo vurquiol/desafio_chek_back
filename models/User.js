@@ -4,35 +4,32 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var UserSchema = Schema({
+	idUser: {
+		type: String,
+		require:true,
+		unique: true	
+	},	
 	name:{
 		type: String,
 		require:true
 	},
-	apellido: {
+	surname: {
 		type: String,
 		require:true		
 	},
-	rut: {
-		type: String,
-		require:true,
-		unique: true	
-	},
+	
 	email: {
 		type: String,
 		require:true,
 		unique: true
 	},
-	clave: {
+	password: {
 		type: String,
 		require:true
 	
 	},
-	rol: {
-		type: String,
-		require:true,
-		default:'USER_ROLE'
-	},
-	saldo:{
+	
+	phone:{
 		type: Number
 	}
 	
@@ -40,4 +37,4 @@ var UserSchema = Schema({
 	
 })
 
-module.exports = mongoose.model('Usuario', UsuarioSchema);
+module.exports = mongoose.model('User', UserSchema);

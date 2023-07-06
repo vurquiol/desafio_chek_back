@@ -4,7 +4,7 @@ var fs = require('fs');
 var path = require('path');
 var bcrypt = require('bcrypt');
 var User = require('../models/user');
-var jwt = require('../services/jwt');
+var jwt = require('../service/jwt');
 
 
 const saltRounds = 10;
@@ -13,38 +13,38 @@ const saveUser = async(req,res) => {
 	var user = new User();
 
 	var params = req.body;
-	const {rut, email, clave, nombre} = req.body;
+	const {idUser, email, password, name, phone} = req.body;
 
-	user.nombre = params.nombre;
-	user.apellido = params.apellido;
-	user.rut = params.rut;
+	user.name = params.name;
+	user.surname = params.surname;
+	user.idUser = params.idUser;
 	user.email = params.email;
-	user.rol = 'ROLE_ADMIN';
-	user.saldo = params.saldo;
+	user.password = params.password;
+	user.phone = params.phone;
 	
 	
-	const existeRut = await user.findOne({rut});
+	const user_idExists = await User.findOne({idUser});
 
-	if(existeRut){
+	if(user_idExists){
 		res.status(400).send({message: 'El rut ya existe'} );
 	}else{
-		if(params.clave != undefined){
+		if(params.password != undefined){
 		// Encriptar contraseña y guardar datos
 		bcrypt.genSalt(saltRounds, function(err, salt) {
-			bcrypt.hash(params.clave,salt,function(err, hash){
-				user.clave = hash;
-				if(user.nombre != null 
-					&& user.apellido != null
-					&& user.rut != null 
+			bcrypt.hash(params.password,salt,function(err, hash){
+				user.password = hash;
+				if(user.name != null 
+					&& user.surname != null
+					&& user.idUser != null 
 					&& user.email != null){
 						// Guardar el user
 						
 							user.save((err, userStored) =>{
 							if(err){
-								res.status(500).send({message: 'Error al guardar el user'});
+								res.status(500).send({message: 'Error al guardar el usuario'});
 							}else{
 								if(!userStored){
-									res.status(404).send({message: 'No se ha registrado el user'});
+									res.status(404).send({message: 'No se ha registrado el usuario'});
 						
 								}else{
 									res.status(200).send({user: userStored});
@@ -66,21 +66,21 @@ const saveUser = async(req,res) => {
 	}
 	}
 }
-
+ 
 const loginUser = async (request, response, next) => {
  
  	var params = request.body;
 
 	console.log(params);
-	var rut = params.rut;
-	var clave = params.clave;
+	var id_user = params.id_user;
+	var password = params.password;
    
-    const user = await user.findOne({ rut});
+    const user = await user.findOne({ id_user});
     console.log(user);
     if (user) {
     
       //Comprobar la contraseña
-			const check = await bcrypt.compare(clave, user.clave);
+			const check = await bcrypt.compare(password, user.password);
 			console.log(check);
 					if(check){
 						//veolver los datos del user logeado
@@ -93,16 +93,16 @@ const loginUser = async (request, response, next) => {
 							response.status(200).send({user});
 						}
 					}else{
-						response.status(404).send({message: 'El user no ha podido loguearse'});
+						response.status(404).send({message: 'El usario no ha podido loguearse'});
 					}
 				
     } else {
-      response.status(404).send({message: 'El user no ha podido loguearse'});
+      response.status(404).send({message: 'El usario no ha podido loguearse'});
     }
   
 };
 
-
+/* 
 
 function updateUser(req, res){
 	var userId = req.params.id;
@@ -182,16 +182,18 @@ function getuser(req, res){
 			}
 
 		}
-	});	
+	});	 
 
-}
+}*/
 
 
 module.exports = {
-	saveUser,
 	loginUser,
+	saveUser
+	/* saveUser
+	,
 	updateUser,
 	updateSaldo,
 	getSaldo,
-	getuser
+	getuser */
 }
