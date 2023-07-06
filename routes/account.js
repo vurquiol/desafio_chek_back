@@ -1,13 +1,13 @@
 'use strict'
 
 var express = require('express');
-var UserController = require('../controllers/user');
+var AccountController = require('../controllers/account');
 
 var api = express.Router();
 var md_auth = require('../middlewares/authenticated');
 
 var multipart = require('connect-multiparty');
 
-api.post('/loguer', UserController.loginUser);
-api.post('/register', UserController.saveUser);
+api.post('/balance', AccountController.balance);
+api.post('/saveBalance', AccountController.saveBalance);
 module.exports = api;

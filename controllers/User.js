@@ -71,19 +71,19 @@ const loginUser = async (request, response, next) => {
  
  	var params = request.body;
 
-	console.log(params);
-	var id_user = params.id_user;
+	var idUser = params.idUser;
 	var password = params.password;
    
-    const user = await user.findOne({ id_user});
-    console.log(user);
+    const user = await User.findOne({ idUser});
+
+
     if (user) {
     
-      //Comprobar la contraseña
+      //Comprobamos la contraseña
 			const check = await bcrypt.compare(password, user.password);
-			console.log(check);
+			
 					if(check){
-						//veolver los datos del user logeado
+						//devolver los datos del user logeado
 						if(params.gethash){
 							//devolver un token de jwt
 							response.status(200).send({
@@ -93,11 +93,11 @@ const loginUser = async (request, response, next) => {
 							response.status(200).send({user});
 						}
 					}else{
-						response.status(404).send({message: 'El usario no ha podido loguearse'});
+						response.status(404).send({message: 'login incorrect'});
 					}
 				
     } else {
-      response.status(404).send({message: 'El usario no ha podido loguearse'});
+      response.status(404).send({message: 'login incorrect'});
     }
   
 };
