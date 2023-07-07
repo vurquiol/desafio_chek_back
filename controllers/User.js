@@ -80,9 +80,7 @@ const loginUser = async (request, response, next) => {
     if (user) {
     
       //Comprobamos la contraseña
-			const check = await bcrypt.compare(password, user.password);	
-			  console.log(check)
-
+			const check = await bcrypt.compare(password, user.password);				  
 					if(check){							
 						//devolver los datos del user logeado
 						if(params.gethash){
@@ -93,12 +91,7 @@ const loginUser = async (request, response, next) => {
 						}else{
 							response.status(200).send({user});
 						}
-					}else{		
-						nuevoIntento.save().then(() => {
-							console.log('Registro de intento de inicio de sesión guardado');
-						  }).catch((error) => {
-							console.error('Error al guardar el registro de intento de inicio de sesión:', error);
-					  	});			
+					}else{									
 						response.status(404).send({message: 'login incorrect'});
 					}				
 				

@@ -18,6 +18,7 @@ const saveBalance = async(req,res) => {
    
 	account.idAccount = params.idAccount;
 	account.idUser = params.idUser;
+    account.userCompleteName = params.userCompleteName;
 	account.accountBalance = params.accountBalance;
 	
     const userValid =  await User.findOne({idUser:  account.idUser});
@@ -34,10 +35,6 @@ const saveBalance = async(req,res) => {
 					&&  account.idUser != null 
 					&&  account.accountBalance != null ){	
                         
-                        console.log(params.idAccount);
-                        console.log(params.idUser);
-                        console.log(params.accountBalance);
-						
                         account.save((err, accountStored) =>{
 							if(err){
 								res.status(500).send({message: 'Error al guardar la tarjeta'});
@@ -70,9 +67,8 @@ function balance(req, res){
 		}else{
 			if(!account){
 				res.status(404).send({message: 'El usuario no existe'});
-			}else{	
-				let accountBalance = account.accountBalance;
-				res.status(200).send({accountBalance});				
+			}else{					
+				res.status(200).send({account});				
 			}
 
 		}

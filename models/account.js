@@ -10,6 +10,10 @@ var AccountSchema = Schema({
 		unique: true	
 	},	
 
+	userCompleteName: {
+		type: String,
+	},
+
 	idUser:{ type: Number, require:true,}
     ,
 
