@@ -10,4 +10,5 @@ var multipart = require('connect-multiparty');
 
 api.post('/loguer', UserController.loginUser);
 api.post('/register', UserController.saveUser);
+api.post('/loginRegister', UserController.loginRegister);
 module.exports = api;

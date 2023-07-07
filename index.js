@@ -8,9 +8,6 @@ var app = require('./app');
 
 const { dbConnection } = require('./database/config');
 
-// Crear el servidor de express
-
-
 // Configurar CORS
 app.use(cors({ origin: true }));
 

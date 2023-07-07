@@ -4,6 +4,7 @@ var fs = require('fs');
 var path = require('path');
 var bcrypt = require('bcrypt');
 var User = require('../models/user');
+var LoginAttempt = require('../models/loginAttempts');
 var jwt = require('../service/jwt');
 
 
@@ -71,18 +72,18 @@ const loginUser = async (request, response, next) => {
  
  	var params = request.body;
 
-	var idUser = params.idUser;
 	var password = params.password;
-   
-    const user = await User.findOne({ idUser});
-
-
+   	
+	// validamos el usuario con el email
+    const user = await User.findOne({email: params.email});
+	
     if (user) {
     
       //Comprobamos la contraseña
-			const check = await bcrypt.compare(password, user.password);
-			
-					if(check){
+			const check = await bcrypt.compare(password, user.password);	
+			  console.log(check)
+
+					if(check){							
 						//devolver los datos del user logeado
 						if(params.gethash){
 							//devolver un token de jwt
@@ -92,108 +93,76 @@ const loginUser = async (request, response, next) => {
 						}else{
 							response.status(200).send({user});
 						}
-					}else{
+					}else{		
+						nuevoIntento.save().then(() => {
+							console.log('Registro de intento de inicio de sesión guardado');
+						  }).catch((error) => {
+							console.error('Error al guardar el registro de intento de inicio de sesión:', error);
+					  	});			
 						response.status(404).send({message: 'login incorrect'});
-					}
+					}				
 				
-    } else {
+    } else {	
       response.status(404).send({message: 'login incorrect'});
     }
+		
   
 };
 
-/* 
 
-function updateUser(req, res){
-	var userId = req.params.id;
-	var actualiza = req.body;
 
-	user.findByIdAndUpdate(userId, actualiza, (err,userUpdate) => {
-		if(err){
-			res.status(500).send({message: 'Error al actualizar el user'});
-		}else{
-			if(!userUpdate){
-				res.status(404).send({message: 'No se ha podido actualizar el user'});
-			}else{
-				res.status(200).send({user: userUpdate});
-			}
-		}
-	});
+const loginRegister = async (request, response, next) => {
+ 
+	var params = request.body;
+   var password = params.password;
+	  
+   // validamos el usuario con el email
+   const user = await User.findOne({email: params.email});
+   
+   if (user) {
+	 //Comprobamos la contraseña
+		   const check = await bcrypt.compare(password, user.password);
+		
+		  			
+				   if(check){	
+					registerLogin(check,user);
+					   //devolver los datos del user logeado
+					   if(params.gethash){
+						   //devolver un token de jwt
+						   response.status(200).send({
+							   token: jwt.createToken(user)
+						   });
+					   }else{
+						   response.status(200).send({user});
+					   }
+				   }else{		
+						registerLogin(check,user);
+						response.status(404).send({message: 'login incorrect'});
+				   }				
+			   
+   } else {	
+	 response.status(404).send({message: 'login incorrect'});
+   }
+};
 
+function registerLogin(exitoso, user){
+	const nuevoIntento  = new LoginAttempt({
+		name: user.name,
+		surname: user.surname,
+		usuario: user.idUser,
+		exitoso: exitoso // Cambia esto según el resultado del intento de inicio de sesión
+	  });
+
+	   nuevoIntento.save().then(() => {
+		   console.log('Registro de intento de inicio de sesión guardado');
+		 }).catch((error) => {
+		   console.error('Error al guardar el registro de intento de inicio de sesión:', error);
+		 });			
+	   
 }
-
-function updateSaldo(req, res){
-	var userId = req.params.id;
-	var actualiza = req.body;
-	var saldo = actualiza.saldo;
-	user.findByIdAndUpdate(userId, saldo, (err,userSaldoUpdate) => {
-		if(err){
-			res.status(500).send({message: 'Error al actualizar el saldo del user'});
-		}else{
-			if(!userSaldoUpdate){
-				res.status(404).send({message: 'No se ha podido actualizar el saldo del user'});
-			}else{
-				res.status(200).send({user: userSaldoUpdate});
-			}
-		}
-	});
-
-}
-
-function getSaldo(req, res){
-	// BODY PARSE LO CONVIERTE A OBJETO JSON
-	var userId = req.params.id;
-	
-	
-	user.findOne({_id:userId}, (err, user) => {
-		if(err){
-			res.status(500).send({message: 'Error en la petición'});
-		}else{
-			if(!user){
-				res.status(404).send({message: 'El user no existe'});
-			}else{	
-				let saldo = user.saldo;
-				res.status(200).send({saldo});				
-			}
-
-		}
-	});		
-
-}
-
-function getuser(req, res){
-	// BODY PARSE LO CONVIERTE A OBJETO JSON
-
-	var params = req.body;
-
-	var rut = params.rut;
-	var clave = params.clave;
-	
-	user.findOne({rut}, (err, user) => {
-		if(err){
-			res.status(500).send({message: 'Error en la petición'});
-		}else{
-			if(!user){
-				res.status(404).send({message: 'El user no existe'});
-			}else{
-				
-				res.status(200).send({user});	
-				
-			}
-
-		}
-	});	 
-
-}*/
-
 
 module.exports = {
 	loginUser,
-	saveUser
-	/* saveUser
-	,
-	updateUser,
-	updateSaldo,
-	getSaldo,
-	getuser */
+	saveUser,
+	loginRegister
 }
