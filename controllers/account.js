@@ -45,8 +45,7 @@ const saveBalance = async(req,res) => {
 								}else{
 									res.status(200).send({account: accountStored});
 						
-								}
-				
+								}				
 							}
 							});
 						

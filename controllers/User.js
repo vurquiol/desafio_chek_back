@@ -112,29 +112,17 @@ const loginRegister = async (request, response, next) => {
    // validamos el usuario con el email
    const user = await User.findOne({email: params.email});
    
-   if (user) {
-	 //Comprobamos la contraseña
+   if (user) {	 //Comprobamos la contraseña
 		   const check = await bcrypt.compare(password, user.password);
 		
 		  			
 				   if(check){	
-					registerLogin(check,user);
-					   //devolver los datos del user logeado
-					   if(params.gethash){
-						   //devolver un token de jwt
-						   response.status(200).send({
-							   token: jwt.createToken(user)
-						   });
-					   }else{
-						   response.status(200).send({user});
-					   }
+						registerLogin(check,user);			
+					  
 				   }else{		
-						registerLogin(check,user);
-						response.status(404).send({message: 'login incorrect'});
+						registerLogin(check,user);						
 				   }				
 			   
-   } else {	
-	 response.status(404).send({message: 'login incorrect'});
    }
 };
 
