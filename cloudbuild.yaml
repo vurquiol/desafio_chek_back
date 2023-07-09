@@ -23,5 +23,5 @@ steps:
 images:
  - 'gcr.io/$PROJECT_ID/$_SERVICE_NAME'
 substitutions:
-   _SERVICE_NAME: todo-add-on
-   _REGION: us-central1
+   _SERVICE_NAME: chek-back
+   _REGION: southamerica-east1 (São Paulo)
