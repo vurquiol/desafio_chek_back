@@ -11,6 +11,9 @@ const errorHandler = require('./middlewares/error');
 
 var UserController = require('./controllers/user');
 var AccountController = require('./controllers/account');
+var md_auth = require('./middlewares/authenticated');
+
+var multipart = require('connect-multiparty');
 
 morgan.token('id', function getId (req) {
 	return req.id
@@ -42,7 +45,12 @@ app.get('/',(req,res) => {
 })
 
 app.post('/api/loguer', UserController.loginUser);
+app.post('/api/register', UserController.saveUser);
+app.post('/api/loginRegister', UserController.loginRegister);
+
+
 app.post('/api/balance', AccountController.balance);
+app.post('/api/saveBalance', AccountController.saveBalance);
 
 app.listen(process.env.PORT || 3005, () => {
     console.log('Servidor corriendo en puerto ' + 3005 );
