@@ -59,7 +59,6 @@ const saveBalance = async(req,res) => {
 function balance(req, res){
 	// BODY PARSE LO CONVIERTE A OBJETO JSON
     var params = req.body;
- 
 	Account.findOne({idUser:params.idUser}, (err, account) => {
 		if(err){
 			res.status(500).send({message: 'Error en la petición'});
