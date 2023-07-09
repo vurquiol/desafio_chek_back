@@ -41,9 +41,10 @@ app.use((req,res,next)=>{
 dbConnection();
 
 app.get('/',(req,res) => {
-    res.send('Hello Node.js on App Engine Standard');
+    res.send('Hello Node.js on App Engine Standard with deployment github and GCP');
 })
 
+//agregar el md_auth para el uso del token
 app.post('/api/loguer', UserController.loginUser);
 app.post('/api/register', UserController.saveUser);
 app.post('/api/loginRegister', UserController.loginRegister);
