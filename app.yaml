@@ -15,4 +15,4 @@ jobs:
       - uses: actions/checkout@v2
       - uses: google-github-actions/deploy-appengine@main
         with:
-          credentials: ${{ secrets.gcp_credentials }}
+          credentials: ${{ gcp_credentials }}
