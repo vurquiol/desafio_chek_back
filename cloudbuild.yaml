@@ -1,10 +1,6 @@
 steps:
-- name: 'node'
-  entrypoint: 'npm'
+- name: node:$_NODE_VERSION
+  entrypoint: npm
   args: ['install']
-- name: 'node'
-  entrypoint: 'npm'
-  args: ['test']
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '--tag=gcr.io/$PROJECT_ID/hello_npm', '.']
-images: ['gcr.io/$PROJECT_ID/hello_npm']
+- name: node:$_NODE_VERSION
+  entrypoint: npm
