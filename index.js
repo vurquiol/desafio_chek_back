@@ -53,7 +53,7 @@ app.post('/api/loginRegister', UserController.loginRegister);
 app.post('/api/balance', AccountController.balance);
 app.post('/api/saveBalance', AccountController.saveBalance);
 
-app.listen(process.env.PORT || 3005, () => {
-    console.log('Servidor corriendo en puerto ' + 3005 );
+app.listen(process.env.PORT || 3010, () => {
+    console.log('Servidor corriendo en puerto ' + 3010 );
 });
 

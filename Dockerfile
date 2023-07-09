@@ -1,19 +1,17 @@
+#Specify a base image
 FROM node:18
 
-# Create app directory
-WORKDIR /app
+#Specify a working directory
+WORKDIR /usr/app
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
-COPY package*.json ./
+#Copy the dependencies file
+COPY ./package.json ./
 
-RUN npm install
-# If you are building your code for production
-# RUN npm ci --omit=dev
+#Install dependencies
+RUN npm install 
 
-# Bundle app source
-COPY . .
+#Copy remaining files
+COPY ./ ./
 
-EXPOSE 8080
-CMD [ "npm", "start" ]
+#Default command
+CMD ["npm","start"]
