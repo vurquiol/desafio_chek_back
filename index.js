@@ -41,7 +41,7 @@ app.use((req,res,next)=>{
 dbConnection();
 
 app.get('/',(req,res) => {
-    res.send('AUTOMATIZANDO EL DEPLOY');
+    res.send('AUTOMATIZANDO EL DEPLOY GCP');
 })
 
 //agregar el md_auth para el uso del token
