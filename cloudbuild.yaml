@@ -15,7 +15,7 @@
 # [START cloudbuild_npm_node]
 steps:
 # Install dependencies
-- name: node
-  entrypoint: npm
+- name: 'gcr.io/cloud-builders/npm'
   args: ['install']
-# [END cloudbuild_npm_node]
+- name: 'gcr.io/cloud-builders/npm'
+  args: ['run', 'build']
