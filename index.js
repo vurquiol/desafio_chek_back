@@ -41,7 +41,7 @@ app.use((req,res,next)=>{
 dbConnection();
 
 app.get('/',(req,res) => {
-    res.send('Hello Node.js on App Engine Standard with deployment github and GCP');
+    res.send('AUTOMATIZANDO EL DEPLOY');
 })
 
 //agregar el md_auth para el uso del token
