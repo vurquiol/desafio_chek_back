@@ -13,10 +13,25 @@
 # limitations under the License.
 
 # [START cloudbuild_npm_node]
-steps:
-# Install dependencies
-- name: node
-  entrypoint: npm
-  args: ['install']
+ steps:
+  - name: node:18
+    entrypoint: npm
+    args: ['install']
+  - name: gcr.io/cloud-builders/gcloud
+    entrypoint: "bash"
+    args:
+      [
+        "-c",
+      ]
+  - name: node:18
+    entrypoint: npm
+    args: ['run', "build"]
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: "bash"
+    args:
+      [
+         "-c",
+        "gcloud config set app/cloud_build_timeout 3200 && gcloud app deploy --no-promote --verbosity=debug",
+      ]
 
 # [END cloudbuild_npm_node]
