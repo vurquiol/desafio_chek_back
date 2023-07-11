@@ -3,7 +3,6 @@
 require('dotenv').config();
 
 const express = require('express');
-const cors = require('cors');
 var app = express()
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
@@ -13,7 +12,6 @@ var UserController = require('./controllers/user');
 var AccountController = require('./controllers/account');
 var md_auth = require('./middlewares/authenticated');
 
-var multipart = require('connect-multiparty');
 
 morgan.token('id', function getId (req) {
 	return req.id
@@ -41,7 +39,7 @@ app.use((req,res,next)=>{
 dbConnection();
 
 app.get('/',(req,res) => {
-    res.send('DEPLOY GCP');
+    res.send('DEPLOY GCP TEST1');
 })
 
 //agregar el md_auth para el uso del token
@@ -58,3 +56,4 @@ app.listen(process.env.PORT || 3000, () => {
     console.log('Servidor corriendo en puerto ' + 3000 );
 });
 
+module.exports = app;

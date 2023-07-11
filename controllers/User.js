@@ -71,7 +71,6 @@ const saveUser = async(req,res) => {
 const loginUser = async (request, response, next) => {
  
  	var params = request.body;
-
 	var password = params.password;
    	
 	// validamos el usuario con el email
