@@ -51,6 +51,7 @@ app.post('/api/loginRegister', UserController.loginRegister);
 
 
 app.post('/api/balance', AccountController.balance);
+app.post('/api/historical', AccountController.historicalAttempt);
 app.post('/api/saveBalance', AccountController.saveBalance);
 
 app.listen(process.env.PORT || 3000, () => {

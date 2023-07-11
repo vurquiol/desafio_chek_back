@@ -111,36 +111,37 @@ const loginRegister = async (request, response, next) => {
 	  
    // validamos el usuario con el email
    const user = await User.findOne({email: params.email});
-   
+   let exitosoaux ;
    if (user) {	 //Comprobamos la contraseña
 		   const check = await bcrypt.compare(password, user.password);
-		
-		  			
-				   if(check){	
-						registerLogin(check,user);			
-					  
-				   }else{		
-						registerLogin(check,user);						
-				   }				
+		  
+		   if(check){
+				this.exitosoaux = true;
+			}else{
+				this.exitosoaux = false;
+			}  
+					const nuevoIntento  = new LoginAttempt({
+						name: user.name,
+						surname: user.surname,
+						usuario: user.idUser,
+						exitoso: this.exitosoaux
+						 // Cambia esto según el resultado del intento de inicio de sesión
+					  });
+					 
+					   nuevoIntento.save().then(() => {
+							response.status(404).send({message: 'Registro de intento de inicio de sesión guardado'});
+						    console.log('Registro de intento de inicio de sesión guardado');
+						 }).catch((error) => {
+							response.status(404).send({message: 'Error al guardar el registro de intento de inicio de sesión'});
+						    console.error('Error al guardar el registro de intento de inicio de sesión:', error);
+						 });		
+								
 			   
    }
 };
 
-function registerLogin(exitoso, user){
-	const nuevoIntento  = new LoginAttempt({
-		name: user.name,
-		surname: user.surname,
-		usuario: user.idUser,
-		exitoso: exitoso // Cambia esto según el resultado del intento de inicio de sesión
-	  });
 
-	   nuevoIntento.save().then(() => {
-		   console.log('Registro de intento de inicio de sesión guardado');
-		 }).catch((error) => {
-		   console.error('Error al guardar el registro de intento de inicio de sesión:', error);
-		 });			
-	   
-}
+
 
 module.exports = {
 	loginUser,

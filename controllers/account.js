@@ -4,6 +4,7 @@ var fs = require('fs');
 var path = require('path');
 var bcrypt = require('bcrypt');
 var Account = require('../models/account');
+var LoginAttempt = require('../models/loginAttempts');
 var User = require('../models/user');
 var jwt = require('../service/jwt');
 
@@ -75,9 +76,29 @@ function balance(req, res){
 }
 
 
+function historicalAttempt(req, res){
+	// BODY PARSE LO CONVIERTE A OBJETO JSON
+    var params = req.body;
+	LoginAttempt.find({usuario:params.idUser}, (err, historical) => {
+		if(err){
+			res.status(500).send({message: 'Error en la petición'});
+		}else{
+			if(!historical){
+				res.status(404).send({message: 'El usuario no existe'});
+			}else{					
+				res.status(200).send({historical});				
+			}
+
+		}
+	});		
+
+}
+
+
 module.exports = {
 	balance,
-    saveBalance
+    saveBalance,
+	historicalAttempt
 	/* saveUser
 	,
 	updateUser,
