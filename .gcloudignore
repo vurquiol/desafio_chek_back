@@ -15,3 +15,16 @@
 
 # Node.js dependencies:
 node_modules/
+
+/vendor/
+/.git/
+e2e/
+/src/
+/coverage
+/^(.*/)?\..*$
+/ ^(.*/)?.*\.json$
+/^(.*/)?.*\.md$
+/^(.*/)?.*\.yaml$
+/^LICENSE
+.angular
+.vscode

@@ -39,18 +39,18 @@ app.use((req,res,next)=>{
 dbConnection();
 
 app.get('/',(req,res) => {
-    res.send('DEPLOY GCP TEST1');
+    res.send('DEPLOY GCP');
 })
 
 //agregar el md_auth para el uso del token
 app.post('/api/loguer', UserController.loginUser);
-app.post('/api/register', UserController.saveUser);
-app.post('/api/loginRegister', UserController.loginRegister);
+app.post('/api/register', md_auth.ensureAuth, UserController.saveUser);
+app.post('/api/loginRegister', md_auth.ensureAuth,UserController.loginRegister);
 
 
-app.post('/api/balance', AccountController.balance);
-app.post('/api/historical', AccountController.historicalAttempt);
-app.post('/api/saveBalance', AccountController.saveBalance);
+app.post('/api/balance', md_auth.ensureAuth,AccountController.balance);
+app.post('/api/historical', md_auth.ensureAuth,AccountController.historicalAttempt);
+app.post('/api/saveBalance', md_auth.ensureAuth,AccountController.saveBalance);
 
 app.listen(process.env.PORT || 3000, () => {
     console.log('Servidor corriendo en puerto ' + 3000 );

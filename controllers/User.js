@@ -114,7 +114,7 @@ const loginRegister = async (request, response, next) => {
    if (user) {	 //Comprobamos la contraseña
 		   const check = await bcrypt.compare(password, user.password);
 		  
-		   if(check){
+		   if(user){
 				this.exitosoaux = true;
 			}else{
 				this.exitosoaux = false;
@@ -128,7 +128,7 @@ const loginRegister = async (request, response, next) => {
 					  });
 					 
 					   nuevoIntento.save().then(() => {
-							response.status(404).send({message: 'Registro de intento de inicio de sesión guardado'});
+							response.status(200).send({message: 'Registro de intento de inicio de sesión guardado'});
 						    console.log('Registro de intento de inicio de sesión guardado');
 						 }).catch((error) => {
 							response.status(404).send({message: 'Error al guardar el registro de intento de inicio de sesión'});
